@@ -19,3 +19,5 @@ draft: false
 1. **Actualizar el sistema:**
    ```bash
    sudo apt update && sudo apt upgrade
+
+2. **Comprobación**

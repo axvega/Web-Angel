@@ -27,5 +27,3 @@ Este sitio demuestra las capacidades de Hugo como generador de sitios estáticos
 ![Tecnologías web](/web.jpg)
 
 [Ver mis proyectos](/posts/proyectos/) | [Leer tutoriales](/posts/tutoriales/) | [Contacto](/contact/)
-# ## Última actualización
-# Sitio actualizado el 9 de octubre de 2025

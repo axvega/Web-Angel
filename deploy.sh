@@ -1,49 +1,57 @@
 #!/bin/bash
 
-# Script de despliegue simple para Hugo
+# Script de despliegue simple y funcional para Hugo
 # Autor: Ángel de la Vega
 
-# Verificar que estamos en el directorio correcto
+# Configuración
+web_dir="/home/axvega/git/Web-Angel"
+public_dir="/home/axvega/git/Web-public"
+
+echo "======================================"
+echo "   DESPLIEGUE RÁPIDO HUGO"
+echo "======================================"
+
+# Paso 1: Verificar directorio
 if [ ! -f "hugo.toml" ]; then
-    echo "ERROR: Este script debe ejecutarse desde el directorio Web-Angel"
+    echo "ERROR: Debes ejecutar desde Web-Angel"
     echo "Usa: cd ~/git/Web-Angel && ./deploy.sh"
     exit 1
 fi
 
-echo "======================================"
-echo "   DESPLIEGUE AUTOMÁTICO"
-echo "======================================"
-
-# Paso 1: Guardar cambios en desarrollo
-echo "Paso 1: Guardando cambios en desarrollo..."
+# Paso 2: Guardar cambios en desarrollo
+echo "1. Guardando cambios desarrollo..."
 git add .
-read -p "Mensaje del commit: " mensaje
-git commit -m "$mensaje" 2>/dev/null || echo "No hay cambios nuevos"
-echo "✓ Listo"
+read -p "   Mensaje commit: " mensaje
+git commit -m "$mensaje"
+git push
+echo "   ✓ Desarrollo subido"
 
-# Paso 2: Generar sitio con Hugo
+# Paso 3: Generar sitio
 echo ""
-echo "Paso 2: Generando sitio con Hugo..."
+echo "2. Generando sitio Hugo..."
 hugo --minify
-echo "✓ Sitio generado"
+echo "   ✓ Sitio generado"
 
-# Paso 3: Copiar a repositorio de producción
+# Paso 4: Copiar a producción
 echo ""
-echo "Paso 3: Copiando a repositorio de producción..."
-cp -r public/* /home/axvega/git/Web-public/
-echo "✓ Archivos copiados"
+echo "3. Copiando a producción..."
+# Limpiar directorio de destino y copiar nuevo contenido
+rm -rf "$public_dir"/*
+cp -r public/* "$public_dir"/
+echo "   ✓ Archivos copiados"
 
-# Paso 4: Subir a GitHub
+# Paso 5: Subir a GitHub Pages
 echo ""
-echo "Paso 4: Subiendo a GitHub..."
-cd /home/axvega/git/Web-public
+echo "4. Subiendo a GitHub..."
+cd "$public_dir"
 git add .
-git commit -m "Deploy $(date +"%d/%m/%Y %H:%M")" 2>/dev/null || echo "No hay cambios"
+git commit -m "Deploy: $(date +"%d/%m/%Y %H:%M")"
 git push origin main
-echo "✓ Subido a GitHub"
+echo "   ✓ GitHub actualizado"
 
 echo ""
 echo "======================================"
-echo "   ¡COMPLETADO!"
+echo "   ¡SITIO ACTUALIZADO!"
 echo "======================================"
-echo "Tu sitio: https://web-angel1.netlify.app/"
+echo "Netlify debería detectar los cambios automáticamente"
+echo "URL: https://web-angel1.netlify.app/"
